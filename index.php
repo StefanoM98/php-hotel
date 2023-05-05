@@ -39,11 +39,18 @@ $hotels = [
     ],
 
 ];
+
 if (isset($_GET["parking"])) {
     $filter = $_GET["parking"];
 } else {
     $filter = "";
-}
+};
+
+if (isset($_GET["vote"])) {
+    $votes = $_GET["vote"];
+} else {
+    $votes = "";
+};
 ?>
 
 <!DOCTYPE html>
@@ -72,16 +79,39 @@ if (isset($_GET["parking"])) {
                     </select>
                 </div>
                 <div class="col">
-                    <!-- <label for="vote">Con quale volutazione lo cerchi?</label>
-                    <select class="form-select" nome="filter" id="vote">
+                    <label for="vote">Con quale volutazione lo cerchi?</label>
+                    <select class="form-select" name="vote" id="votes">
                         <option value="">All</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
-                    </select> -->
+                    </select>
                 </div>
+
+
+
+                <!-- <div class="col">
+                    <label for="parking">Ti serve il parcheggio?</label>
+                    <select class="form-select" name="parking" id="parking">
+                        <option value="">Tutti</option>
+                        <option value="true">Si</option>
+                        <option value="false">No</option>
+                    </select>
+                </div> -->
+                <!-- <div class="col">
+                    <label for="vote">Con quale volutazione lo cerchi?</label>
+                    <select class="form-select" nome="vote" id="vote">
+                        <option value="">All</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div> -->
+
                 <div>
                     <button type="submit">Cerca</button>
                 </div>
@@ -99,7 +129,8 @@ if (isset($_GET["parking"])) {
             </thead>
             <tbody>
                 <?php foreach ($hotels as $hotel) {
-                    if ($filter === "" || ($filter === "true" && $hotel["parking"] === true) || ($filter === "false" && $hotel["parking"] === false)) { ?>
+                    if (($filter === "" || ($filter === "true" && $hotel["parking"] === true) || ($filter === "false" && $hotel["parking"] === false)) && ($votes === "" || $hotel["vote"] >= $votes)) {
+                ?>
 
                         <tr>
                             <th scope="row"><?php echo $hotel["name"]; ?></th>
@@ -109,8 +140,6 @@ if (isset($_GET["parking"])) {
                                 <?php } else { ?>
                                     No
                                 <?php } ?>
-
-
                             </td>
                             <td><?php echo $hotel["vote"]; ?></td>
                             <td><?php echo $hotel["distance_to_center"]; ?></td>
